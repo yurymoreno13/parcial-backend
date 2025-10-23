@@ -1,12 +1,38 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  items: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    qty: { type: Number, default: 1 }
-  }],
-  total: { type: Number, default: 0 }
-}, { timestamps: true })
+  // Referencia al usuario (para poder hacer populate)
+  user: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "User", 
+    required: true 
+  },
 
-export default mongoose.model('Order', orderSchema)
+  // Campos opcionales para guardar el nombre y correo
+  // al momento de crear la orden (snapshot)
+  userName: { type: String },
+  userEmail: { type: String },
+
+  // Lista de ítems en la orden
+  items: [{
+    product: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "Product", 
+      required: true 
+    },
+    qty: { 
+      type: Number, 
+      required: true, 
+      default: 1 
+    }
+  }],
+
+  // Total de la orden
+  total: { 
+    type: Number, 
+    required: true 
+  }
+}, { timestamps: true });
+
+// Exportar modelo
+export default mongoose.model("Order", orderSchema);
